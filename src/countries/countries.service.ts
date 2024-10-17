@@ -1,31 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { forkJoin, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+
 import { DateNagerService } from 'src/date-nager/date-nager.service';
 import { CountriesNowService } from 'src/countries-now/countries-now.service';
+import { Country, CountryFullInfo } from 'src/types/types';
 
 @Injectable()
 export class CountriesService {
-  constructor(private readonly dateNagerService: DateNagerService, private readonly countriesNowService: CountriesNowService) {}
+  constructor(
+    private readonly dateNagerService: DateNagerService,
+    private readonly countriesNowService: CountriesNowService,
+  ) {}
 
-  getAvailableCountries(): Observable<any> {
+  getAvailableCountries(): Observable<Country[]> {
     return this.dateNagerService.getAvailableCountries();
   }
 
-  getCountryInfo(countryCode: string): Observable<any> {
+  getCountryInfo(countryCode: string): Observable<CountryFullInfo> {
     return forkJoin({
       countryInfo: this.dateNagerService.getCountryInfo(countryCode),
-      flagUrl: this.countriesNowService.getFlagUrl(countryCode)
+      flag: this.countriesNowService.getFlagUrl(countryCode),
     }).pipe(
-      switchMap(({ countryInfo, flagUrl }) => {
-        return this.countriesNowService.getPopulationData(flagUrl.data.iso3).pipe(
+      switchMap(({ countryInfo, flag }) => {
+        return this.countriesNowService.getPopulationData(flag.iso3).pipe(
           map((population) => ({
             ...countryInfo,
-            flagUrl,
-            population
-          }))
+            flagUrl: flag.flag,
+            population: population.populationCounts,
+          })),
         );
-      })
+      }),
     );
   }
 }

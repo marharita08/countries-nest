@@ -3,8 +3,8 @@ import { HttpModule } from '@nestjs/axios';
 import { CountriesNowService } from './countries-now.service';
 
 @Module({
-    imports: [HttpModule],
-    providers: [CountriesNowService],
-    exports: [CountriesNowService],
-  })
-  export class CountriesNowModule {}
+  imports: [HttpModule],
+  providers: [CountriesNowService],
+  exports: [CountriesNowService],
+})
+export class CountriesNowModule {}
