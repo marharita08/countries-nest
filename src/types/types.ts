@@ -1,6 +1,6 @@
 type Country = {
   name: string;
-  code: string;
+  countryCode: string;
 };
 
 type CountryInfo = {
