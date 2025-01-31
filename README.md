@@ -17,11 +17,12 @@ The application returns data about countries that it reads from external APIs.
 
 2. Create a `.env` file with the following variables:
 
-| Environment Variable           | Value                                      | Description                                                |
+| Environment Variable           | Default Value                                      | Description                                                |
 |-------------------------------|--------------------------------------------|------------------------------------------------------------|
 | `PORT`                        | `3001`                                     | The port on which the application will run.                |
 | `DATE_NAGER_BASE_URL`        | `https://date.nager.at/api/v3/`          | The base URL for accessing the Date Nager API, which provides country-related data. |
 | `COUNTRIES_NOW_BASE_URL`     | `https://countriesnow.space/api/v0.1/`   | The base URL for accessing the Countries Now API, which provides flag and population data. |
+| `CLIENT_URL`     | `http://localhost:3000`   | The base URL of client, uses for cors enabling. |
 
 1. Start the backend server:
 

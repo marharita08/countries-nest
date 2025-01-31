@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { DateNagerService } from 'src/date-nager/date-nager.service';
@@ -23,6 +23,14 @@ export class CountriesService {
       flag: this.countriesNowService.getFlagUrl(countryCode),
     }).pipe(
       switchMap(({ countryInfo, flag }) => {
+        if (!flag) {
+          return of({
+            ...countryInfo,
+            flagUrl: null,
+            population: null,
+          });
+        }
+
         return this.countriesNowService.getPopulationData(flag.iso3).pipe(
           map((population) => ({
             ...countryInfo,
